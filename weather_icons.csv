@@ -1,0 +1,35 @@
+﻿condition.text.en,condition.text.es,condition.icon,condition.code
+Mist,Niebla,https://cdn.weatherapi.com/weather/64x64/day/143.png,1030
+Partly Cloudy,Parcialmente nublado,https://cdn.weatherapi.com/weather/64x64/day/116.png,1003
+Patchy light rain with thunder,Lluvia ligera irregular con truenos,https://cdn.weatherapi.com/weather/64x64/day/386.png,1273
+Moderate or heavy rain shower,Chubascos moderados o fuertes,https://cdn.weatherapi.com/weather/64x64/day/356.png,1243
+Light rain shower,Chubascos ligeros,https://cdn.weatherapi.com/weather/64x64/day/353.png,1240
+Patchy rain nearby,Lluvia irregular cercana,https://cdn.weatherapi.com/weather/64x64/day/176.png,1063
+Heavy rain,Lluvia fuerte,https://cdn.weatherapi.com/weather/64x64/day/308.png,1195
+Moderate rain,Lluvia moderada,https://cdn.weatherapi.com/weather/64x64/day/302.png,1189
+Sunny,Soleado,https://cdn.weatherapi.com/weather/64x64/day/113.png,1000
+Light rain shower,Chubascos ligeros,https://cdn.weatherapi.com/weather/64x64/night/353.png,1240
+Patchy rain nearby,Lluvia irregular cercana,https://cdn.weatherapi.com/weather/64x64/night/176.png,1063
+Partly Cloudy,Parcialmente nublado,https://cdn.weatherapi.com/weather/64x64/night/116.png,1003
+Cloudy,Nublado,https://cdn.weatherapi.com/weather/64x64/night/119.png,1006
+Clear,Despejado,https://cdn.weatherapi.com/weather/64x64/night/113.png,1000
+Overcast,Cubierto,https://cdn.weatherapi.com/weather/64x64/night/122.png,1009
+Thundery outbreaks in nearby,Tormentas eléctricas cercanas,https://cdn.weatherapi.com/weather/64x64/night/200.png,1087
+Patchy light rain,Lluvia ligera irregular,https://cdn.weatherapi.com/weather/64x64/night/293.png,1180
+Patchy light rain in area with thunder,Lluvia ligera irregular con truenos,https://cdn.weatherapi.com/weather/64x64/night/386.png,1273
+Light rain,Lluvia ligera,https://cdn.weatherapi.com/weather/64x64/night/296.png,1183
+Moderate or heavy rain shower,Chubascos moderados o fuertes,https://cdn.weatherapi.com/weather/64x64/night/356.png,1243
+Light drizzle,Llovizna ligera,https://cdn.weatherapi.com/weather/64x64/night/266.png,1153
+Patchy light drizzle,Llovizna ligera irregular,https://cdn.weatherapi.com/weather/64x64/night/263.png,1150
+Heavy rain,Lluvia fuerte,https://cdn.weatherapi.com/weather/64x64/night/308.png,1195
+Moderate rain at times,Lluvia moderada a veces,https://cdn.weatherapi.com/weather/64x64/night/299.png,1186
+Moderate rain,Lluvia moderada,https://cdn.weatherapi.com/weather/64x64/night/302.png,1189
+Light rain,Lluvia ligera,https://cdn.weatherapi.com/weather/64x64/day/296.png,1183
+Patchy light drizzle,Llovizna ligera irregular,https://cdn.weatherapi.com/weather/64x64/day/263.png,1150
+Moderate rain at times,Lluvia moderada a veces,https://cdn.weatherapi.com/weather/64x64/day/299.png,1186
+Patchy light rain,Lluvia ligera irregular,https://cdn.weatherapi.com/weather/64x64/day/293.png,1180
+Light drizzle,Llovizna ligera,https://cdn.weatherapi.com/weather/64x64/day/266.png,1153
+Thundery outbreaks in nearby,Tormentas eléctricas cercanas,https://cdn.weatherapi.com/weather/64x64/day/200.png,1087
+Cloudy,Nublado,https://cdn.weatherapi.com/weather/64x64/day/119.png,1006
+Overcast,Cubierto,https://cdn.weatherapi.com/weather/64x64/day/122.png,1009
+Patchy light rain in area with thunder,Lluvia ligera irregular con truenos,https://cdn.weatherapi.com/weather/64x64/day/386.png,1273

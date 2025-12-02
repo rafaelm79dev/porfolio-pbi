@@ -1,0 +1,32 @@
+table languages
+	lineageTag: c9ffc382-22d1-4bc9-8db7-301f4c77d853
+
+	column code
+		dataType: string
+		lineageTag: 462674f3-880f-49da-a1c2-7aee241b568f
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column language
+		dataType: string
+		lineageTag: 7fb64111-8da6-4ae2-a563-f6ffe08c223b
+		summarizeBy: none
+		sourceColumn: language
+
+		annotation SummarizationSetBy = Automatic
+
+	partition languages = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WSs1T0lFyzUvPySzOUIrVAQoUgwSKCxIPb8zPUYqNBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [code = _t, language = _t])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

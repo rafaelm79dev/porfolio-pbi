@@ -1,0 +1,65 @@
+table pdg_hourly_df
+	lineageTag: 0d8dcc5b-d1dc-46e4-881a-9811977a5113
+
+	column temperature_2m
+		dataType: string
+		lineageTag: e76b91b4-c9f5-45ab-a5a4-0bf4e55a902a
+		summarizeBy: none
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: string
+		lineageTag: fea9d383-4bd3-447a-9c06-4e5550a56be3
+		summarizeBy: none
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 801562e5-c6e6-4a15-ba07-24081f6bdec9
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		lineageTag: 6314be9f-358c-42bd-91c3-38bec5f76848
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pdg_hourly_df = m
+		mode: import
+		source =
+				let
+				    Source = pdg_apiURL,
+				    // Paso 1: acceder al record con listas
+				    hourlyRecord = Source[hourly],
+				    // Paso 1: acceder al record con listas
+				    Tabla =
+				        Table.FromColumns(
+				            {
+				                hourlyRecord[time],
+				                hourlyRecord[temperature_2m],
+				                hourlyRecord[relative_humidity_2m]
+				            },
+				            {
+				                "time",
+				                "temperature_2m",
+				                "relative_humidity_2m"
+				            }
+				        ),
+				    #"Added Custom" = Table.AddColumn(Tabla, "city", each "Porto de Galinhas"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"time", "date"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

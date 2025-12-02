@@ -1,0 +1,87 @@
+table conditions
+	lineageTag: 12638c02-c226-4ddf-804b-305554befad4
+
+	column code
+		dataType: int64
+		formatString: 0
+		lineageTag: d56615a3-730e-4827-854e-6149e964fabd
+		summarizeBy: sum
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column day
+		dataType: string
+		lineageTag: 202bdeb3-ad56-4b10-8f66-ac7fba31d0f1
+		summarizeBy: none
+		sourceColumn: day
+
+		annotation SummarizationSetBy = Automatic
+
+	column night
+		dataType: string
+		lineageTag: 88c1251a-1853-43d5-a26c-0144133c7ab1
+		summarizeBy: none
+		sourceColumn: night
+
+		annotation SummarizationSetBy = Automatic
+
+	column icon
+		dataType: string
+		lineageTag: 67d73602-5235-489c-ac05-106992439f0b
+		summarizeBy: none
+		sourceColumn: icon
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'languages.lang_name'
+		dataType: string
+		lineageTag: b330cbdc-eeef-4b2d-98cd-5cf8026f4836
+		summarizeBy: none
+		sourceColumn: languages.lang_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'languages.lang_iso'
+		dataType: string
+		lineageTag: 47d6db2a-dd24-4e3a-894b-c70a13b3c91f
+		summarizeBy: none
+		sourceColumn: languages.lang_iso
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'languages.day_text'
+		dataType: string
+		lineageTag: 42417cd4-793a-4729-9283-03b64f0ab0ac
+		summarizeBy: none
+		sourceColumn: languages.day_text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'languages.night_text'
+		dataType: string
+		lineageTag: d2293d90-53f5-402d-a727-90faf74046bd
+		summarizeBy: none
+		sourceColumn: languages.night_text
+
+		annotation SummarizationSetBy = Automatic
+
+	partition conditions = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = Json.Document(Web.Contents("https://www.weatherapi.com/docs/conditions.json")),
+				    #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Expanded Column1" = Table.ExpandRecordColumn(#"Converted to Table", "Column1", {"code", "day", "night", "icon", "languages"}, {"code", "day", "night", "icon", "languages"}),
+				    #"Expanded languages" = Table.ExpandListColumn(#"Expanded Column1", "languages"),
+				    #"Expanded languages1" = Table.ExpandRecordColumn(#"Expanded languages", "languages", {"lang_name", "lang_iso", "day_text", "night_text"}, {"languages.lang_name", "languages.lang_iso", "languages.day_text", "languages.night_text"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Expanded languages1", each ([languages.lang_iso] = "es")),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"code", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

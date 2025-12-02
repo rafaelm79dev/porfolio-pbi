@@ -1,0 +1,56 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	maxParallelismPerRefresh: 1
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup Parameters
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'API connection'
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup Datasets
+
+	annotation PBI_QueryGroupOrder = 2
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["mdeo_current_df","mdeo_daily_df","mdeo_hourly_df","mdeo_latitude","mdeo_longitude","pdg_latitude","pdg_longitude","pdc_latitude","pdc_longitude","daily_values","current_values","pdg_current_df","pdg_daily_df","pdg_hourly_df","pdc_current_df","pdc_daily_df","pdc_hourly_df","current_df","daily_df","locations","weather codes","languages","dates","conditions","hourly_df","hourly_values","pdg_apiURL","mdeo_apiURL","pdc_apiURL"]
+
+annotation TranslationsBuilder = Version:2.2-Updated:2025-11-28
+
+annotation PBI_ProTooling = ["TMDLView_Desktop","DevMode"]
+
+ref table locations
+ref table _Measures
+ref table 'weather codes'
+ref table conditions
+ref table languages
+ref table Days
+ref table dates
+ref table languageParam
+ref table mdeo_current_df
+ref table mdeo_daily_df
+ref table mdeo_hourly_df
+ref table pdg_current_df
+ref table pdg_daily_df
+ref table pdg_hourly_df
+ref table pdc_current_df
+ref table pdc_daily_df
+ref table pdc_hourly_df
+ref table current_df
+ref table hourly_df
+ref table daily_df
+ref table pdg_apiURL
+ref table mdeo_apiURL
+ref table pdc_apiURL
+
+ref cultureInfo en-US
+ref cultureInfo es-ES
+

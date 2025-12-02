@@ -1,0 +1,129 @@
+table current_df
+	lineageTag: 1948d3cc-e42b-44b4-8170-45d25c7aa8e2
+
+	column date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3f7ee4c5-51cb-4278-937e-8979e29700fb
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column temperature_2m
+		dataType: double
+		formatString: 0
+		lineageTag: 5265ba0f-0b7b-49cd-9243-04fad1d204e7
+		summarizeBy: sum
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column precipitation
+		dataType: double
+		lineageTag: 30b87f92-57fa-4ec7-b3d6-f3c286b45d60
+		summarizeBy: none
+		sourceColumn: precipitation
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rain
+		dataType: double
+		lineageTag: 6f9bc26b-9caf-4cf8-ae09-e2d08862c0d2
+		summarizeBy: none
+		sourceColumn: rain
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_day
+		dataType: int64
+		formatString: 0
+		lineageTag: 63426ad9-1893-4392-b0f9-d2130961b6f5
+		summarizeBy: none
+		sourceColumn: is_day
+
+		annotation SummarizationSetBy = User
+
+	column weather_code
+		dataType: int64
+		formatString: 0
+		lineageTag: 3666d03b-a6af-4cec-9c29-6d4b70744074
+		summarizeBy: sum
+		sourceColumn: weather_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: int64
+		formatString: 0
+		lineageTag: 46439b33-6376-4c63-b1eb-5d42cfda8df8
+		summarizeBy: sum
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_speed_10m
+		dataType: double
+		formatString: 0.0
+		lineageTag: 02614472-bdc8-41d5-9ad9-0b673e8386ae
+		summarizeBy: sum
+		sourceColumn: wind_speed_10m
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_direction_10m
+		dataType: double
+		formatString: 0.0
+		lineageTag: 80d37bce-bc68-4d43-8d1c-2263b7a706cc
+		summarizeBy: sum
+		sourceColumn: wind_direction_10m
+
+		annotation SummarizationSetBy = Automatic
+
+	column surface_pressure
+		dataType: double
+		formatString: 0
+		lineageTag: 19b37dff-170a-4247-9a68-743e050e1ef0
+		summarizeBy: sum
+		sourceColumn: surface_pressure
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column city
+		dataType: string
+		lineageTag: f43447c4-7241-4e3b-b0ba-f325ae69758f
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column interval
+		dataType: string
+		lineageTag: 4618ca3d-8b2f-4ba3-92c3-e773a749b069
+		summarizeBy: none
+		sourceColumn: interval
+
+		annotation SummarizationSetBy = Automatic
+
+	partition current_df = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = Table.Combine({mdeo_current_df, pdg_current_df, pdc_current_df}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"precipitation", type number}, {"rain", type number}, {"is_day", Int64.Type}, {"wind_speed_10m", type number}, {"wind_direction_10m", type number}, {"surface_pressure", type number}, {"temperature_2m", type number}, {"weather_code", Int64.Type}, {"relative_humidity_2m", Int64.Type}, {"date", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

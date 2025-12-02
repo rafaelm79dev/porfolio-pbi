@@ -1,0 +1,18 @@
+relationship b345a566-de5e-f127-a148-cf29431a300e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: locations.city
+	toColumn: current_df.city
+
+relationship 50fa2d4f-aa87-2240-309c-fcc09e92ef48
+	fromColumn: daily_df.dateId
+	toColumn: dates.dateId
+
+relationship 4c7b19fc-85f6-7578-3a98-a32cbcbde4cb
+	fromColumn: daily_df.city
+	toColumn: locations.city
+
+relationship 428f3f9a-d15b-54be-b39b-3f3683aba023
+	fromColumn: hourly_df.city
+	toColumn: locations.city
+

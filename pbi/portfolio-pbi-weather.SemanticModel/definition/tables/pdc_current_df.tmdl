@@ -1,0 +1,116 @@
+table pdc_current_df
+	lineageTag: 9bd0c787-27b0-4053-81ab-932260604b3d
+
+	column temperature_2m
+		dataType: string
+		lineageTag: 7ad3cc76-e70d-4aaa-89c4-92211fdef477
+		summarizeBy: none
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column precipitation
+		dataType: string
+		lineageTag: 3377f92e-c350-4eb3-abd6-b537ca049c32
+		summarizeBy: none
+		sourceColumn: precipitation
+
+		annotation SummarizationSetBy = Automatic
+
+	column rain
+		dataType: string
+		lineageTag: d1279ac5-8fdc-40f5-803b-b641d2bfa4a3
+		summarizeBy: none
+		sourceColumn: rain
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_day
+		dataType: string
+		lineageTag: 87a649fc-38a5-4cdb-8633-d92b2f7c429c
+		summarizeBy: none
+		sourceColumn: is_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_code
+		dataType: string
+		lineageTag: 6db045fb-0e00-4555-b7f4-b52bc5bf2745
+		summarizeBy: none
+		sourceColumn: weather_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: string
+		lineageTag: 41531ccd-17fa-4d2d-8ad7-74b8692e6cc4
+		summarizeBy: none
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_speed_10m
+		dataType: string
+		lineageTag: 8ffd5a9e-c0bb-4fb3-934d-0492e86a9d37
+		summarizeBy: none
+		sourceColumn: wind_speed_10m
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_direction_10m
+		dataType: string
+		lineageTag: 100732d1-b30b-4c10-88fa-4a15e12b2fa8
+		summarizeBy: none
+		sourceColumn: wind_direction_10m
+
+		annotation SummarizationSetBy = Automatic
+
+	column surface_pressure
+		dataType: string
+		lineageTag: 88bf1c41-d963-4033-bf66-1a2771dd9af0
+		summarizeBy: none
+		sourceColumn: surface_pressure
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 7d5031d3-dcaa-44fa-9172-c02b315e685c
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		lineageTag: db433906-eab5-4ae2-966a-75d35c13bcf6
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column interval
+		dataType: string
+		lineageTag: f6ec1951-c256-4889-b82a-3619e5cd9e99
+		summarizeBy: none
+		sourceColumn: interval
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pdc_current_df = m
+		mode: import
+		source = ```
+				let
+				    Source = pdc_apiURL,
+				    current = Table.Transpose(Record.ToTable(Source[current])),
+				    #"Promoted Headers" = Table.PromoteHeaders(current, [PromoteAllScalars=true]),
+				    #"Added Custom" = Table.AddColumn(#"Promoted Headers", "city", each "Playa del Carmen"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"time", "date"}})
+				in 
+				    #"Renamed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,32 @@
+table mdeo_apiURL
+	lineageTag: 1dad5a16-40c9-4d68-96e2-742532836774
+
+	column Name
+		dataType: string
+		lineageTag: e56153b4-8a5c-4c4f-a336-4d46e0255fe0
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: string
+		lineageTag: 8d5b5a56-4338-4498-880c-534278001a5f
+		summarizeBy: none
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mdeo_apiURL = m
+		mode: import
+		queryGroup: 'API connection'
+		source =
+				let
+				    Source = Json.Document(Web.Contents("https://api.open-meteo.com/v1/forecast?latitude="&mdeo_latitude&"&longitude="&mdeo_longitude&"&daily="&daily_values&"&hourly="&hourly_values&"&current="&current_values&"&models=gfs_seamless&timezone=America%2FSao_Paulo&forecast_days=8", [Headers=[#"Accept-Encoding"="gzip"]]))
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Record
+

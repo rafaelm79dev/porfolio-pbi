@@ -1,0 +1,414 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 780,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1281.3919374114189,
+            "y": 186.48570196018198
+          },
+          "nodeIndex": "locations",
+          "nodeLineageTag": "cdaf6756-dd73-4740-a2e2-740a9daa38b1",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3119.3919374114189,
+            "y": 150.48570196018198
+          },
+          "nodeIndex": "_Measures",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4155.3919374114193,
+            "y": 174.48570196018198
+          },
+          "nodeIndex": "weather codes",
+          "nodeLineageTag": "5a2495c0-6f0c-45e5-b241-9fed895f626a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4439.3919374114193,
+            "y": 114.48570196018198
+          },
+          "nodeIndex": "conditions",
+          "nodeLineageTag": "12638c02-c226-4ddf-804b-305554befad4",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4723.3919374114193,
+            "y": 186.48570196018198
+          },
+          "nodeIndex": "languages",
+          "nodeLineageTag": "c9ffc382-22d1-4bc9-8db7-301f4c77d853",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 5007.3919374114193,
+            "y": 150.48570196018198
+          },
+          "nodeIndex": "Days",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 5291.3919374114193,
+            "y": 198.48570196018198
+          },
+          "nodeIndex": "dates",
+          "nodeLineageTag": "d6c51f98-d730-445d-9a3d-c8cf5e8e911b",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 5575.3919374114193,
+            "y": 174.48570196018198
+          },
+          "nodeIndex": "languageParam",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "mdeo_weather",
+          "nodeLineageTag": "9a250202-e303-4c8b-b20e-0f1ff4ccd0b6",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "mdeo_current_df",
+          "nodeLineageTag": "79f83a3b-766d-4da0-b94a-d020313bc205",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "mdeo_daily_df",
+          "nodeLineageTag": "72da2bf3-4b28-4ae6-9425-c2791c0ab60b",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "mdeo_hourly_df",
+          "nodeLineageTag": "3edaa60a-880a-431b-ad91-8a75a1e1acf4",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "current_df",
+          "nodeLineageTag": "1948d3cc-e42b-44b4-8170-45d25c7aa8e2",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "hourly_df",
+          "nodeLineageTag": "4ec753f3-0629-480c-8725-ecddfa0a9736",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "daily_df",
+          "nodeLineageTag": "1ce672fc-3b18-41b0-88b1-b8684eebc2ca",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdg_weather",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdg_current_df",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdg_daily_df",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdg_hourly_df",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdc_weather",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdc_current_df",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdc_daily_df",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdc_hourly_df",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 1,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 170,
+            "y": 15
+          },
+          "nodeIndex": "locations",
+          "nodeLineageTag": "cdaf6756-dd73-4740-a2e2-740a9daa38b1",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1011,
+            "y": 190
+          },
+          "nodeIndex": "weather codes",
+          "nodeLineageTag": "5a2495c0-6f0c-45e5-b241-9fed895f626a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 511,
+            "y": 277
+          },
+          "nodeIndex": "current_df",
+          "nodeLineageTag": "1948d3cc-e42b-44b4-8170-45d25c7aa8e2",
+          "size": {
+            "height": 406,
+            "width": 234
+          },
+          "zIndex": 4
+        }
+      ],
+      "name": "current",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 2,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 832,
+            "y": 254
+          },
+          "nodeIndex": "daily_df",
+          "nodeLineageTag": "1ce672fc-3b18-41b0-88b1-b8684eebc2ca",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 302,
+            "y": 47
+          },
+          "nodeIndex": "dates",
+          "nodeLineageTag": "d6c51f98-d730-445d-9a3d-c8cf5e8e911b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 234,
+            "y": 564
+          },
+          "nodeIndex": "locations",
+          "nodeLineageTag": "cdaf6756-dd73-4740-a2e2-740a9daa38b1",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        }
+      ],
+      "name": "daily",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 3,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 672,
+            "y": 114
+          },
+          "nodeIndex": "hourly_df",
+          "nodeLineageTag": "4ec753f3-0629-480c-8725-ecddfa0a9736",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 223,
+            "y": 134
+          },
+          "nodeIndex": "locations",
+          "nodeLineageTag": "cdaf6756-dd73-4740-a2e2-740a9daa38b1",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "hourly",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "hourly",
+  "defaultDiagram": "All tables"
+}

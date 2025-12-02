@@ -1,0 +1,153 @@
+createOrReplace
+
+	table daily_df
+		lineageTag: cc74400c-08bd-4364-a72f-24e43721f6da
+
+		column date
+			dataType: dateTime
+			formatString: Long Date
+			lineageTag: 74727093-7872-473d-9314-d5169f4b8146
+			summarizeBy: none
+			sourceColumn: date
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		column temperature_2m_max
+			dataType: double
+			formatString: 0.0
+			lineageTag: 96f65592-34f5-48c6-bdda-5b9d93561542
+			summarizeBy: none
+			sourceColumn: temperature_2m_max
+
+			changedProperty = DataType
+
+			annotation SummarizationSetBy = User
+
+		column temperature_2m_min
+			dataType: double
+			formatString: 0.0
+			lineageTag: 2aca0f77-db53-4183-9d45-233a033e45d2
+			summarizeBy: none
+			sourceColumn: temperature_2m_min
+
+			changedProperty = DataType
+
+			annotation SummarizationSetBy = User
+
+		column precipitation_sum
+			dataType: double
+			lineageTag: 5add9b75-3b42-432e-8e74-9cce83f7c178
+			summarizeBy: sum
+			sourceColumn: precipitation_sum
+
+			changedProperty = DataType
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column precipitation_hours
+			dataType: int64
+			formatString: 0
+			lineageTag: ace1d1bf-c14e-4e17-8a0b-3dbbdb50a42d
+			summarizeBy: sum
+			sourceColumn: precipitation_hours
+
+			changedProperty = DataType
+
+			annotation SummarizationSetBy = Automatic
+
+		column precipitation_probability_max
+			dataType: double
+			lineageTag: 48658543-b6fb-460a-9042-130d6ce48598
+			summarizeBy: sum
+			sourceColumn: precipitation_probability_max
+
+			changedProperty = DataType
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column city
+			dataType: string
+			lineageTag: 39266a7d-d2e5-4dde-a06f-6f44fd96eb6c
+			summarizeBy: none
+			sourceColumn: city
+
+			annotation SummarizationSetBy = Automatic
+
+		column uv_index_max
+			dataType: double
+			lineageTag: 5ba40072-5d7e-4be7-a088-2887c9009edc
+			summarizeBy: sum
+			sourceColumn: uv_index_max
+
+			changedProperty = DataType
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column DayName = ```
+				
+				 
+				 var selectedLang = SELECTEDVALUE(languages[code])
+				return selectedLang
+				/*return SWITCH(
+				    TRUE(),
+				    selectedLanguage = "es", [dayNameES],
+				    selectedLanguage = "en", [dayNameEN]
+				)*/  -- valor por defecto
+				```
+			lineageTag: 4c64a94f-3668-4c6c-a43e-a47d8ddfb01d
+			summarizeBy: none
+
+			annotation SummarizationSetBy = Automatic
+
+		column dateId = year(daily_df[date]) * 10000 + month(daily_df[date]) * 100 + day(daily_df[date])
+			formatString: 0
+			lineageTag: 3004243d-33cf-4f81-b76c-68d84e6e892d
+			summarizeBy: none
+
+			annotation SummarizationSetBy = Automatic
+
+		column showInChart = if ([date] > UTCNOW(), 1, 0)
+			formatString: 0
+			lineageTag: 32a61782-29cb-4b8e-a92c-0a6408d7ece4
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column sunrise
+			dataType: string
+			lineageTag: 97444e39-b9f7-43d2-9dfa-25a7cfb1c8ee
+			summarizeBy: none
+			sourceColumn: sunrise
+
+			annotation SummarizationSetBy = Automatic
+
+		column sunset
+			dataType: string
+			lineageTag: b689f77b-bca0-4c9d-ad34-8278455cf6ad
+			summarizeBy: none
+			sourceColumn: sunset
+
+			annotation SummarizationSetBy = Automatic
+
+		partition daily_df = m
+			mode: import
+			source =
+					let
+					    Source = Table.Combine({mdeo_daily_df, col_daily_df, pde_daily_df}),
+					    #"Changed Type" = Table.TransformColumnTypes(Source,{{"date", type datetime}}),
+					    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"date", type date}})
+					in
+					    #"Changed Type1"
+
+		annotation PBI_NavigationStepName = Navigation
+
+		annotation PBI_ResultType = Table
+

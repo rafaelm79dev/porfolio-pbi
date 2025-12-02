@@ -1,0 +1,135 @@
+table pdc_daily_df
+	lineageTag: 0a9c5ef1-0b95-4364-841f-ce009ac017a7
+
+	column temperature_2m_max
+		dataType: string
+		lineageTag: a87a7e2a-2328-49a2-bf9a-ec59950a163b
+		summarizeBy: none
+		sourceColumn: temperature_2m_max
+
+		annotation SummarizationSetBy = Automatic
+
+	column temperature_2m_min
+		dataType: string
+		lineageTag: 31706327-0198-4a08-9cd4-b306cd69d4eb
+		summarizeBy: none
+		sourceColumn: temperature_2m_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column precipitation_sum
+		dataType: string
+		lineageTag: b6e1153b-b42d-45a6-9709-0d4336cd8bf5
+		summarizeBy: none
+		sourceColumn: precipitation_sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column precipitation_hours
+		dataType: string
+		lineageTag: eb0fee9d-d213-4572-9ea0-601014022e80
+		summarizeBy: none
+		sourceColumn: precipitation_hours
+
+		annotation SummarizationSetBy = Automatic
+
+	column precipitation_probability_max
+		dataType: string
+		lineageTag: b99e1df9-4b95-4a3d-84cb-3c39da0f8f88
+		summarizeBy: none
+		sourceColumn: precipitation_probability_max
+
+		annotation SummarizationSetBy = Automatic
+
+	column uv_index_max
+		dataType: string
+		lineageTag: 31397046-afaa-4d84-9bba-90885a9cba72
+		summarizeBy: none
+		sourceColumn: uv_index_max
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 866d907a-16b8-4ffe-afe8-b1a8930affad
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_code
+		dataType: string
+		lineageTag: ac2983fa-5e54-463c-960b-f012b4165848
+		summarizeBy: none
+		sourceColumn: weather_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column sunrise
+		dataType: string
+		lineageTag: 60b4c856-b7d9-44d4-8c23-82cf3de18cda
+		summarizeBy: none
+		sourceColumn: sunrise
+
+		annotation SummarizationSetBy = Automatic
+
+	column sunset
+		dataType: string
+		lineageTag: cf94396a-5074-451d-8573-26c93776a138
+		summarizeBy: none
+		sourceColumn: sunset
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		lineageTag: 6acbb10d-c6f1-4a87-938a-4b21fb7693dd
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pdc_daily_df = m
+		mode: import
+		source =
+				let
+				    Source = mdeo_apiURL,
+				    // Paso 1: acceder al record con listas
+				    dailyRecord = Source[daily],
+				    // Paso 1: acceder al record con listas
+				    Tabla =
+				        Table.FromColumns(
+				            {
+				                dailyRecord[time],
+				                dailyRecord[uv_index_max],
+				                dailyRecord[temperature_2m_max],
+				                dailyRecord[temperature_2m_min],
+				                dailyRecord[weather_code],
+				                dailyRecord[precipitation_sum],
+				                dailyRecord[precipitation_hours],
+				                dailyRecord[precipitation_probability_max],
+				                dailyRecord[sunrise],
+				                dailyRecord[sunset]
+				            },
+				            {
+				                "time",
+				                "uv_index_max",
+				                "temperature_2m_max",
+				                "temperature_2m_min",
+				                "weather_code",
+				                "precipitation_sum",
+				                "precipitation_hours",
+				                "precipitation_probability_max",
+				                "sunrise",
+				                "sunset"
+				            }
+				        ),
+				    #"Added Custom" = Table.AddColumn(Tabla, "city", each "Playa del Carmen"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"time", "date"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "portfolio-pbi-weather"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d9320425-cd9d-4468-8e7c-fd8c28c23b87"
+  }
+}

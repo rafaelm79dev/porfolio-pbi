@@ -1,0 +1,36 @@
+createOrReplace
+
+	table mdeo_weather
+		isHidden
+		lineageTag: 8bdaa434-be96-49fb-980f-fe94213149f5
+
+		column Name
+			dataType: string
+			isHidden
+			lineageTag: f895de0c-f3b5-4280-ab52-3a57609820cb
+			summarizeBy: none
+			sourceColumn: Name
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition mdeo_weather = m
+			mode: import
+			source = 
+					let
+						Source = Python.Execute(
+							"import openmeteo_requests#(lf)#(lf)import pandas as pd#(lf)openmeteo = openmeteo_requests.Client()#(lf)#(lf)url = ""https://api.open-meteo.com/v1/forecast""#(lf)params = {#(lf)#(tab)""latitude"": "
+								& mdeo_latitude
+								& ",#(lf)#(tab)""longitude"": "
+								& mdeo_longitude
+								& ",#(lf)#(tab)""daily"": [""temperature_2m_max"", ""temperature_2m_min"", ""precipitation_sum"", ""precipitation_hours"", ""precipitation_probability_max"", ""uv_index_max"",""sunrise"", ""sunset"", ""precipitation_probability_max""],#(lf)#(tab)""hourly"": [""temperature_2m"",""relative_humidity_2m""],#(lf)#(tab)""current"": [""temperature_2m"", ""precipitation"", ""rain"", ""is_day"", ""weather_code"", ""relative_humidity_2m"", ""wind_speed_10m"", ""wind_direction_10m"", ""surface_pressure""],""models"": ""gfs_seamless""#(lf)}#(lf)responses = openmeteo.weather_api(url, params=params)#(lf)#(lf)response = responses[0]#(lf)#(lf)current = response.Current()#(lf)current_variables = {}#(lf)for idx, var_name in enumerate(params[""current""]):#(lf)    current_variables[var_name] = current.Variables(idx).Value()#(lf)#(lf)current_data = {""date"": pd.to_datetime(current.Time(), unit = ""s"", utc = True)}#(lf)current_data.update(current_variables)#(lf)current_dataframe = pd.DataFrame(data=[current_data])#(lf)#(lf)hourly = response.Hourly()#(lf)hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()#(lf)#(lf)hourly_data = {""date"": pd.date_range(#(lf)#(tab)start = pd.to_datetime(hourly.Time(), unit = ""s"", utc = True),#(lf)#(tab)end =  pd.to_datetime(hourly.TimeEnd(), unit = ""s"", utc = True),#(lf)#(tab)freq = pd.Timedelta(seconds = hourly.Interval()),#(lf)#(tab)inclusive = ""left""#(lf))}#(lf)#(lf)hourly_data[""temperature_2m""] = hourly_temperature_2m#(lf)#(lf)hourly_dataframe = pd.DataFrame(data = hourly_data)#(lf)#(lf)daily = response.Daily()#(lf)daily_temperature_2m_max = daily.Variables(0).ValuesAsNumpy()#(lf)daily_temperature_2m_min = daily.Variables(1).ValuesAsNumpy()#(lf)daily_precipitation_sum = daily.Variables(2).ValuesAsNumpy()#(lf)daily_precipitation_hours = daily.Variables(3).ValuesAsNumpy()#(lf)daily_precipitation_probability_max = daily.Variables(4).ValuesAsNumpy()#(lf)#(lf)daily_data = {""date"": pd.date_range(#(lf)#(tab)start = pd.to_datetime(daily.Time(), unit = ""s"", utc = True),#(lf)#(tab)end =  pd.to_datetime(daily.TimeEnd(), unit = ""s"", utc = True),#(lf)#(tab)freq = pd.Timedelta(seconds = daily.Interval()),#(lf)#(tab)inclusive = ""left""#(lf))}#(lf)#(lf)for idx, var_name in enumerate(params[""daily""]):#(lf)    daily_data[var_name] = daily.Variables(idx).ValuesAsNumpy()#(lf)#(lf)daily_dataframe = pd.DataFrame(data = daily_data)"
+						)
+					in
+						Source
+
+		changedProperty = IsHidden
+
+		annotation PBI_NavigationStepName = Navigation
+
+		annotation PBI_ResultType = Table

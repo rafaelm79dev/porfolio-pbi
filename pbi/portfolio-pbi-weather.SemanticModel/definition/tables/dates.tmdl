@@ -1,0 +1,63 @@
+table dates
+	lineageTag: d6c51f98-d730-445d-9a3d-c8cf5e8e911b
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 38aab581-cec3-43f2-a376-f3030df2066d
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column dateId = year(dates[date]) * 10000 + month(dates[date]) * 100 + day(dates[date])
+		formatString: 0
+		lineageTag: d267a059-5e91-4b31-9f27-f35eee8baabe
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column dayOfWeek = WEEKDAY(dates[date],1)
+		formatString: 0
+		lineageTag: a796e131-bd33-447b-a166-87f58038021a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column dayNameEN = LOOKUPVALUE(Days[day_en], Days[day_id], dates[dayOfWeek])
+		lineageTag: 6d6bef58-0976-4489-8979-c1c10856abc8
+		summarizeBy: none
+		sortByColumn: dateId
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column dayNameES = LOOKUPVALUE(Days[day_es], Days[day_id], dates[dayOfWeek])
+		lineageTag: 36c803aa-5774-4d43-a083-67faf47e58c0
+		summarizeBy: none
+		sortByColumn: dateId
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dates = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = daily_df,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"date"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Removed Duplicates",{{"date", type datetime}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"date", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

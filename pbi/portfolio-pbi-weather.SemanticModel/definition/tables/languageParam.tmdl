@@ -1,0 +1,48 @@
+table languageParam
+	lineageTag: 2d527418-8eca-4970-a0c3-7c8a05d9faca
+
+	column language
+		lineageTag: 1009f24b-ef35-4852-b2e3-5f96a7fc016f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 2d93478f-bebf-416d-97b6-21624c19f717
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: dddf3492-f248-467b-9cac-299cf0c656bb
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition languageParam = calculated
+		mode: import
+		source =
+				{
+				    ("English", NAMEOF('dates'[dayNameEN]), 0),
+				    ("Español", NAMEOF('dates'[dayNameES]), 1)
+				}
+
+	annotation PBI_Id = 02d85456bb984c3582541a5e2d97f18f
+

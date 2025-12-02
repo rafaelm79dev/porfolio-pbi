@@ -1,0 +1,116 @@
+table mdeo_current_df
+	lineageTag: 79f83a3b-766d-4da0-b94a-d020313bc205
+
+	column temperature_2m
+		dataType: string
+		lineageTag: 2126405c-83e5-4124-a315-55c3b521f544
+		summarizeBy: none
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column precipitation
+		dataType: string
+		lineageTag: bf395299-de3d-4dbb-a941-15a1ffa696bc
+		summarizeBy: none
+		sourceColumn: precipitation
+
+		annotation SummarizationSetBy = Automatic
+
+	column rain
+		dataType: string
+		lineageTag: 8fae2603-2ad7-401d-8a1f-43ef45a5f1cf
+		summarizeBy: none
+		sourceColumn: rain
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_day
+		dataType: string
+		lineageTag: de239805-f255-45f2-8a30-d0246af50790
+		summarizeBy: none
+		sourceColumn: is_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_code
+		dataType: string
+		lineageTag: fce8ddd9-feff-42d9-b360-726c78bd746e
+		summarizeBy: none
+		sourceColumn: weather_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: string
+		lineageTag: 8abaaaa9-f6a0-4c55-aa1b-bbfbd7a6bcb3
+		summarizeBy: none
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_speed_10m
+		dataType: string
+		lineageTag: 959ff253-00d0-4021-8ccc-1f73398eee38
+		summarizeBy: none
+		sourceColumn: wind_speed_10m
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_direction_10m
+		dataType: string
+		lineageTag: 92cd28b3-3144-40fc-a114-d94754d18ff9
+		summarizeBy: none
+		sourceColumn: wind_direction_10m
+
+		annotation SummarizationSetBy = Automatic
+
+	column surface_pressure
+		dataType: string
+		lineageTag: ec36da80-348d-4ae3-ae00-f61ae59fe13f
+		summarizeBy: none
+		sourceColumn: surface_pressure
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: c26aec1e-9dbc-4b04-b585-fc066df0ce0a
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		lineageTag: 1a97d251-c889-4941-8020-3689d0b156f2
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column interval
+		dataType: string
+		lineageTag: bd2664e2-a849-46cf-9079-f22dbe90d4c8
+		summarizeBy: none
+		sourceColumn: interval
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mdeo_current_df = m
+		mode: import
+		source = ```
+				let
+				    Source = mdeo_apiURL,
+				    current = Table.Transpose(Record.ToTable(Source[current])),
+				    #"Promoted Headers" = Table.PromoteHeaders(current, [PromoteAllScalars=true]),
+				    #"Added Custom" = Table.AddColumn(#"Promoted Headers", "city", each "Montevideo"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"time", "date"}})
+				in 
+				    #"Renamed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

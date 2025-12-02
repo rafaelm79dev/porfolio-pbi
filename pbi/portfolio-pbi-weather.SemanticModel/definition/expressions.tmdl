@@ -1,0 +1,72 @@
+expression mdeo_latitude = "-34.90328" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 66572784-6586-4488-bae7-2a81857f49b6
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression mdeo_longitude = "-56.18816" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 026d5e77-bb21-4203-93f6-5bfdf06cf93c
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression pdg_latitude = "-8.50111" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 10dea799-14dd-49b4-8292-126ce4df836b
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression pdg_longitude = "-35" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 48c5496c-2f42-491a-85a5-9750375a39a2
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression pdc_latitude = "20.6274" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1059c4d3-e007-4cf3-bb5a-eb728121100b
+	queryGroup: Parameters
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression pdc_longitude = "-87.07987" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: b650434d-7348-4ff1-9b4a-38476a1fc9f9
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression daily_values = "uv_index_max,temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum,precipitation_hours,precipitation_probability_max,sunrise,sunset" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 90703fb4-4342-4f8e-a89b-6057e0620571
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression current_values = "temperature_2m,precipitation,rain,is_day,weather_code,relative_humidity_2m,wind_speed_10m,wind_direction_10m,surface_pressure" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1693b37f-2cb3-446a-9376-62f68246e9c1
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression hourly_values = "temperature_2m,relative_humidity_2m" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: cf555f31-5eb4-44af-9467-41f12ff2cb5e
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

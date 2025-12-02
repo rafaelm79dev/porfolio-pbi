@@ -1,0 +1,65 @@
+table pdc_hourly_df
+	lineageTag: c31c2667-9322-4ddc-b493-a72062b493fe
+
+	column temperature_2m
+		dataType: string
+		lineageTag: e87098c6-0077-4bf5-a821-73448b1a5aef
+		summarizeBy: none
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: string
+		lineageTag: b5875b03-4f97-432e-9c5f-02739c539a14
+		summarizeBy: none
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 644417f0-8024-4634-a4d3-a23c86207ce9
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		lineageTag: 7ab1a8c1-6daa-4dde-bafb-9a3c7be995d5
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pdc_hourly_df = m
+		mode: import
+		source =
+				let
+				    Source = mdeo_apiURL,
+				    // Paso 1: acceder al record con listas
+				    hourlyRecord = Source[hourly],
+				    // Paso 1: acceder al record con listas
+				    Tabla =
+				        Table.FromColumns(
+				            {
+				                hourlyRecord[time],
+				                hourlyRecord[temperature_2m],
+				                hourlyRecord[relative_humidity_2m]
+				            },
+				            {
+				                "time",
+				                "temperature_2m",
+				                "relative_humidity_2m"
+				            }
+				        ),
+				    #"Added Custom" = Table.AddColumn(Tabla, "city", each "Playa del Carmen"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"time", "date"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,69 @@
+table hourly_df
+	lineageTag: 4ec753f3-0629-480c-8725-ecddfa0a9736
+
+	column date
+		dataType: dateTime
+		formatString: h:nn
+		lineageTag: f182b060-0614-4dc6-8e0c-06ea52b2ba61
+		summarizeBy: none
+		sourceColumn: date
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column temperature_2m
+		dataType: double
+		formatString: 0.0
+		lineageTag: d56feca7-914b-4e02-993d-234abe09c45b
+		summarizeBy: sum
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: double
+		lineageTag: d815c818-06be-4ae6-93fd-019b34fdf870
+		summarizeBy: sum
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column city
+		dataType: string
+		lineageTag: 00575e20-eb30-48b8-800f-88ca9f7025a3
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column humidity = hourly_df[relative_humidity_2m] / 100
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a2632276-6a62-4714-b1bd-68ba09900bb9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition hourly_df = m
+		mode: import
+		source =
+				let
+				    CurrentDateTime = DateTime.LocalNow(),
+				    Plus10Hours = CurrentDateTime + + #duration(0, 10, 0, 0),
+				    Source = Table.Combine({mdeo_hourly_df, pdg_hourly_df, pdc_hourly_df}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"date", type datetime}, {"temperature_2m", type number}, {"relative_humidity_2m", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [date] >= CurrentDateTime),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [date] < Plus10Hours)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,25 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure DayName_Today+1 = ```
+				
+				var todayPlus1 = TODAY() + 1
+				var selectedLang = SELECTCOLUMNS (
+				        SUMMARIZE (
+				            languageParam,
+				            languageParam[language],
+				            languageParam[Parameter Fields]
+				        ),
+				        languageParam[language]
+				    )
+				var dayOfWeek = SWITCH(TRUE(), 
+				 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+				 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+				
+				 RETURN
+				    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+				
+				```
+			lineageTag: d0d5dfa5-2866-4d14-a7a1-74271a1e30b0
+

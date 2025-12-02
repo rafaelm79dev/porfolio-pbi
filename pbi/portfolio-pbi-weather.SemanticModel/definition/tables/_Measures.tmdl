@@ -1,0 +1,715 @@
+table _Measures
+	lineageTag: 83c8f4be-1b21-49a2-b6aa-e677cea0aafb
+
+	measure Current_Temp_C = FORMAT(sum(current_df[temperature_2m]), "####.#") & " °C"
+		lineageTag: 45eae1dd-b5ab-4af7-8188-0ab59b6d54ea
+
+	measure Current_Temp_Desc = ```
+			
+			var selectedLocation = SELECTEDVALUE(locations[city])
+			var selectedLanguage = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			var weatherCode = LOOKUPVALUE(current_df[weather_code], current_df[city], selectedLocation)
+			var isDay = LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)
+			var conditionCode = LOOKUPVALUE('weather codes'[condition.code], 'weather codes'[code], weatherCode)
+			
+			var valueDescription = SWITCH(TRUE(),
+			isDay = 1 && selectedLanguage = "Español", LOOKUPVALUE(conditions[languages.day_text], conditions[code],  conditionCode),
+			isDay = 0 && selectedLanguage = "Español", LOOKUPVALUE(conditions[languages.night_text], conditions[code],  conditionCode),
+			isDay = 1 && selectedLanguage = "English", LOOKUPVALUE(conditions[day], conditions[code],  conditionCode),
+			isDay = 0 && selectedLanguage = "English", LOOKUPVALUE(conditions[night], conditions[code],  conditionCode))
+			RETURN  CONVERT(valueDescription, STRING)
+			```
+		lineageTag: 8fa815dd-9f98-4291-becc-51f90c193e3c
+
+	measure Current_Temp_Last_Updated = ```
+			
+			 VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Last updated, " & FORMAT(FIRSTNONBLANK(current_df[date], ""), "dd mmm HH:mm", "en-us"),
+			 selectedLang = "Español", "Última actualización, " & FORMAT(FIRSTNONBLANK(current_df[date], ""), "dd mmm HH:mm", "es-UY")
+			 )
+			```
+		lineageTag: 45738bb8-7bf8-452e-a4fc-1365696ff092
+
+	measure Current_Temp_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var selectedLanguage = SELECTEDVALUE(languages[code])
+			var weatherCode = LOOKUPVALUE(current_df[weather_code], current_df[city], selectedLocation)
+			var isDay = LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: 08ca9c10-b5a5-40c2-b139-bdbcd87d73c5
+
+	measure 'Title_ Humidity' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Humidity",
+			 selectedLang = "Español", "Humedad")
+			```
+		displayFolder: Labels
+		lineageTag: 21b54e9d-5efc-4afa-b646-70740b16b304
+
+	measure Current_Humdity_Perc = FORMAT(sum(current_df[relative_humidity_2m]), "####") & " %"
+		lineageTag: d4b4a610-4b50-47af-96a4-322c030e9a28
+
+	measure Current_Wind_Speed = FORMAT(sum(current_df[wind_speed_10m]), "####") & " kph"
+		formatString: 0
+		lineageTag: a107a6fb-7b5b-468c-be29-94a860c91ffc
+
+	measure 'Title_ Wind_Speed' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Wind Speed",
+			 selectedLang = "Español", "Velocidad del Viento")
+			```
+		displayFolder: Labels
+		lineageTag: 4e20ea43-0744-4302-8b28-c8306b63ac3b
+
+	measure 'Title_ Index_UV' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "UV Index",
+			 selectedLang = "Español", "Índice UV")
+			```
+		displayFolder: Labels
+		lineageTag: 806f182d-ae88-4d0b-a88f-0fadb6cc426f
+
+	measure Current_Index_UV =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var indexUV = LOOKUPVALUE(daily_df[uv_index_max], daily_df[dateId], [Current_DateId], daily_df[city], selectedLocation)
+			return indexUV
+		lineageTag: b26074fd-42e1-4682-b51c-9594903bdce9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Current_DateId = CONVERT(FORMAT(FIRSTNONBLANK(current_df[date], ""), "yyyyMMdd"), INTEGER)
+		formatString: 0
+		lineageTag: 21ac7a83-aa79-4f24-ae72-fbe7d2d5570c
+
+	measure Current_Index_UV_Desc = ```
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var indexUV = [Current_Index_UV]
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English" && indexUV >= 0 && indexUV <= 2, "LOW",
+			 selectedLang = "Español" && indexUV >= 0 && indexUV <= 2, "BAJA",
+			 selectedLang = "English" && indexUV >= 3 && indexUV <= 5, "MODERATE",
+			 selectedLang = "Español" && indexUV >= 3 && indexUV <= 5, "MODERADA",
+			 selectedLang = "English" && indexUV >= 6 && indexUV <= 7, "HIGH",
+			 selectedLang = "Español" && indexUV >= 6 && indexUV <= 7, "ALTA",
+			 selectedLang = "English" && indexUV >= 8 && indexUV <= 10, "VERY HIGH",
+			 selectedLang = "Español" && indexUV >= 8 && indexUV <= 10, "MUY ALTA",
+			 selectedLang = "English" && indexUV >= 11, "EXTREMELY HIGH",
+			 selectedLang = "Español" && indexUV >= 11, "EXTREMADAMENTE ALTA"
+			 )
+			
+			
+			
+			
+			```
+		lineageTag: eea668db-31d9-49a2-8581-99e5927ad4c0
+
+	measure 'Title_ Index_UV_High' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "HIGH",
+			 selectedLang = "Español", "ALTA")
+			```
+		displayFolder: Labels
+		lineageTag: 073ae7a7-0d5f-42bd-8d16-5cbd47b63fd8
+
+	measure 'Title_ Index_UV_Low' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "LOW",
+			 selectedLang = "Español", "BAJA")
+			```
+		displayFolder: Labels
+		lineageTag: 04d18b6a-b88b-4422-a00a-7bdca898f676
+
+	measure 'Title_ Index_UV_Moderate' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "MODERATED",
+			 selectedLang = "Español", "MODERADA")
+			```
+		displayFolder: Labels
+		lineageTag: 05169860-5a9e-4357-be86-f2388f2128b0
+
+	measure 'Title_ Index_UV_VeryHigh' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "VERY HIGH",
+			 selectedLang = "Español", "MUY ALTA")
+			```
+		displayFolder: Labels
+		lineageTag: 6527735b-88d2-45c2-a8ed-26b2b2137529
+
+	measure 'Title_ Index_UV_ExtHigh' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "EXTERMELY HIGH",
+			 selectedLang = "Español", "EXTREMADAMENTE ALTA")
+			```
+		displayFolder: Labels
+		lineageTag: b911abab-e974-4642-883d-a29661a2b9a9
+
+	measure Weather_Today+1_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1 /*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 1) * 10000 + month(TODAY() + 1) * 100 + day(TODAY() + 1)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: dc4a1030-59ef-40a5-9e52-ddb64f050457
+
+	measure Weather_Today+2_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1/*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 2) * 10000 + month(TODAY() + 2) * 100 + day(TODAY() + 2)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: c55edc28-85d9-41d3-b77d-2ccdd6c3fdc1
+
+	measure Weather_Today+3_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1/*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 3) * 10000 + month(TODAY() + 3) * 100 + day(TODAY() + 3)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: 44f0226c-b4ac-4acd-878c-dae419d7cd55
+
+	measure Weather_Today+4_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1/*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 4) * 10000 + month(TODAY() + 4) * 100 + day(TODAY() + 4)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: c85e8362-2166-4c5e-8119-d55468d0db3c
+
+	measure Weather_Today+5_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1/*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 5) * 10000 + month(TODAY() + 5) * 100 + day(TODAY() + 5)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: 5d402fcb-b680-4f2d-9b35-7f1849dcea66
+
+	measure Title_Forecast = ```
+			
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Forecast Weather",
+			 selectedLang = "Español", "Pronóstico del Clima")
+			```
+		displayFolder: Labels
+		lineageTag: eaa7b079-728a-4f51-8185-345e4ad96033
+
+	measure DayName_Today+1 = ```
+			
+			var todayPlus1 = TODAY() + 1
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: d0d5dfa5-2866-4d14-a7a1-74271a1e30b0
+
+	measure Weather_Today+6_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1/*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 6) * 10000 + month(TODAY() + 6) * 100 + day(TODAY() + 6)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: 7211044a-3d20-4490-94b0-e139de8ad234
+
+	measure Weather_Today+7_Icon_URL =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var isDay = 1/*LOOKUPVALUE(current_df[is_day], current_df[city], selectedLocation)*/
+			var todayPlus1 = year(TODAY() + 7) * 10000 + month(TODAY() + 7) * 100 + day(TODAY() + 7)
+			var weatherCode = LOOKUPVALUE(daily_df[weather_code], current_df[city], selectedLocation, daily_df[dateId], todayPlus1)
+			
+			var valueIconURL = SWITCH(TRUE(),
+			isDay = 1, LOOKUPVALUE('weather codes'[condition.day.url], 'weather codes'[code], weatherCode),
+			isDay = 0, LOOKUPVALUE('weather codes'[condition.nigth.url], 'weather codes'[code], weatherCode))
+			RETURN  CONVERT(valueIconURL, STRING)
+		lineageTag: 96ac4f71-8cd0-4ffa-8f40-90897e113d36
+
+	measure DayName_Today+2 = ```
+			
+			var todayPlus1 = TODAY() + 2
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: d6e1445e-16b0-452b-b894-f4ea4e7db173
+
+	measure DayName_Today+3 = ```
+			
+			var todayPlus1 = TODAY() + 3
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: f0379a04-0d9f-420e-be8c-e2e945c9e386
+
+	measure DayName_Today+4 = ```
+			
+			var todayPlus1 = TODAY() + 4
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: 0800974d-51d8-4e9f-b79d-0fbfafed39b2
+
+	measure DayName_Today+5 = ```
+			
+			var todayPlus1 = TODAY() + 5
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: aeffba9c-f4fa-4252-aaa8-3f2c020a5675
+
+	measure DayName_Today+6 = ```
+			
+			var todayPlus1 = TODAY() + 6
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: 89dac55a-1e1e-4fce-a62c-cce87a0eb340
+
+	measure DayName_Today+7 = ```
+			
+			var todayPlus1 = TODAY() + 7
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			var dayOfWeek = SWITCH(TRUE(), 
+			 selectedLang = "English", CONVERT(FORMAT(todayPlus1, "ddd", "en-us"), STRING),
+			 selectedLang = "Español", CONVERT(FORMAT(todayPlus1, "ddd", "es-UY"), STRING))
+			
+			 RETURN
+			    UPPER(LEFT(dayOfWeek, 1)) & LOWER(MID(dayOfWeek, 2, LEN(dayOfWeek) - 1))
+			
+			```
+		displayFolder: Labels
+		lineageTag: 9ca2ae18-738c-4e2c-8953-f95c0ffd57ef
+
+	measure Title_ChanceOfRain = ```
+			
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Chance of rain",
+			 selectedLang = "Español", "Probabilidad de lluvia")
+			```
+		displayFolder: Labels
+		lineageTag: 4c0ec0a9-1d19-4477-b367-9b4ca2692365
+
+	measure Current_LocationCountry =
+			
+			var selectedLocation = SELECTEDVALUE(locations[City])
+			var selectedCountry = LOOKUPVALUE(locations[country], locations[city], selectedLocation)
+			return CONVERT(selectedLocation &", "& selectedCountry, STRING)
+		lineageTag: 10fb8549-1d98-4f09-b7d8-e0cb5c06ebc5
+
+	measure Title_Temperature = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Temperature",
+			 selectedLang = "Español", "Temperatura")
+			```
+		displayFolder: Labels
+		lineageTag: 92f2e0bd-2e45-4a1a-8a18-5b5aed647580
+
+	measure Current_Title_WindDirection =
+			
+			VAR Deg = MOD ([Current_WindDirection], 360 )
+			var selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			VAR Direction =
+			    SWITCH (
+			        TRUE(),
+			        Deg >= 337.5 || Deg < 22.5, "North",
+			        Deg >= 22.5 && Deg < 67.5, "Northeast",
+			        Deg >= 67.5 && Deg < 112.5, "East",
+			        Deg >= 112.5 && Deg < 157.5, "Southeast",
+			        Deg >= 157.5 && Deg < 202.5, "South",
+			        Deg >= 202.5 && Deg < 247.5, "Southwest",
+			        Deg >= 247.5 && Deg < 292.5, "West",
+			        Deg >= 292.5 && Deg < 337.5, "Northwest"
+			    )
+			RETURN SWITCH (
+			        selectedLang,
+			        "Español",
+			            SWITCH (
+			                Direction,
+			                "North", "Norte",
+			                "Northeast", "Noreste",
+			                "East", "Este",
+			                "Southeast", "Sudeste",
+			                "South", "Sur",
+			                "Southwest", "Sudoeste",
+			                "West", "Oeste",
+			                "Northwest", "Noroeste"
+			            ),
+			        Direction  // por defecto devuelve en inglés
+			    )
+		lineageTag: 287617f4-347b-43a4-8f01-974cf8f54f88
+
+	measure Current_WindDirection = sum(current_df[wind_direction_10m])
+		lineageTag: 2452a270-bced-4bb6-abd9-f49c54437c6b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Title_ Wind_Direction' = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Wind Direction",
+			 selectedLang = "Español", "Dirección del Viento")
+			```
+		displayFolder: Labels
+		lineageTag: a566f8e2-a200-4957-93f5-4f5d5f6c760c
+
+	measure Title_Pressure = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Pressure",
+			 selectedLang = "Español", "Presión")
+			```
+		displayFolder: Labels
+		lineageTag: 2b5f9394-58a7-4728-8135-672a8a8ad32e
+
+	measure Current_Pressure = FORMAT(sum(current_df[surface_pressure]), "####") & " hPa"
+		lineageTag: 35827656-5043-4c1a-8884-d9099f2d6843
+
+	measure Current_Pressure_Desc =
+			
+			VAR pressure = sum(current_df[surface_pressure])
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			VAR Category =
+			    SWITCH (
+			        TRUE(),
+			        pressure > 1013, "High",
+			        pressure >= 1010 && pressure <= 1013, "Medium",
+			        pressure < 1010, "Low"
+			    )
+			RETURN
+			    SWITCH (
+			        selectedLang,
+			        "Español",
+			            SWITCH (
+			                Category,
+			                "High", "Alta",
+			                "Medium", "Media",
+			                "Low", "Baja"
+			            ),
+			        Category   // por defecto devuelve la categoría en inglés
+			    )
+		lineageTag: e7d89026-e861-46e8-9e9b-89fc998cf46b
+
+	measure Title_CreatedBy = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Created by:",
+			 selectedLang = "Español", "Creado por:")
+			```
+		displayFolder: Labels
+		lineageTag: 458157b5-b4bf-4151-aec0-f67da8d8cbc2
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 33fc4a13-460a-4fe8-ad3e-8571676c1be6
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 82bccc150e884cb6b6b9869abccaece3
+

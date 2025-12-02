@@ -1,0 +1,65 @@
+table mdeo_hourly_df
+	lineageTag: 3edaa60a-880a-431b-ad91-8a75a1e1acf4
+
+	column temperature_2m
+		dataType: string
+		lineageTag: d01ba8b0-9214-44bb-86b1-d6f9813a6b9c
+		summarizeBy: none
+		sourceColumn: temperature_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity_2m
+		dataType: string
+		lineageTag: cb0f9b22-7e07-407a-b32e-8863fa6904d0
+		summarizeBy: none
+		sourceColumn: relative_humidity_2m
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: b7575e1c-c7ef-4663-a00e-eeea89dce574
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: string
+		lineageTag: 94625559-513d-4a82-a628-1d7691e17c00
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mdeo_hourly_df = m
+		mode: import
+		source =
+				let
+				    Source = mdeo_apiURL,
+				    // Paso 1: acceder al record con listas
+				    hourlyRecord = Source[hourly],
+				    // Paso 1: acceder al record con listas
+				    Tabla =
+				        Table.FromColumns(
+				            {
+				                hourlyRecord[time],
+				                hourlyRecord[temperature_2m],
+				                hourlyRecord[relative_humidity_2m]
+				            },
+				            {
+				                "time",
+				                "temperature_2m",
+				                "relative_humidity_2m"
+				            }
+				        ),
+				    #"Added Custom" = Table.AddColumn(Tabla, "city", each "Montevideo"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"time", "date"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

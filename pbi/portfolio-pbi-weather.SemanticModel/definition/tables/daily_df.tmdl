@@ -1,0 +1,150 @@
+table daily_df
+	lineageTag: 1ce672fc-3b18-41b0-88b1-b8684eebc2ca
+
+	column date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: bd65a2a4-f52b-4274-a7ef-30a9ac7f6a79
+		summarizeBy: none
+		sourceColumn: date
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column temperature_2m_max
+		dataType: double
+		formatString: 0
+		lineageTag: d0aa3c87-3fe1-40a3-b34f-823b74b7ca51
+		summarizeBy: none
+		sourceColumn: temperature_2m_max
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column temperature_2m_min
+		dataType: double
+		formatString: 0
+		lineageTag: b44674b1-37f0-4135-a283-fc692cd720be
+		summarizeBy: none
+		sourceColumn: temperature_2m_min
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column precipitation_sum
+		dataType: double
+		formatString: 0
+		lineageTag: 707fe6c8-541f-473f-8ad3-15b698603dc0
+		summarizeBy: none
+		sourceColumn: precipitation_sum
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column precipitation_hours
+		dataType: double
+		lineageTag: c9dc4852-9d79-4b16-b459-0b9a9cd2ac87
+		summarizeBy: none
+		sourceColumn: precipitation_hours
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column precipitation_probability_max
+		dataType: double
+		formatString: 0.00
+		lineageTag: f6497c09-616d-42ba-8220-353600ca8d55
+		summarizeBy: none
+		sourceColumn: precipitation_probability_max
+
+		annotation SummarizationSetBy = User
+
+	column uv_index_max
+		dataType: double
+		formatString: 0.0
+		lineageTag: 98fcbd0c-c291-42d4-afea-87ba759a747f
+		summarizeBy: none
+		sourceColumn: uv_index_max
+
+		annotation SummarizationSetBy = User
+
+	column city
+		dataType: string
+		lineageTag: 911ef7bf-feca-48de-adb8-56a837a62173
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column dateId = year(daily_df[date]) * 10000 + month(daily_df[date]) * 100 + day(daily_df[date])
+		formatString: 0
+		lineageTag: a03e4687-d9ee-4c48-89b2-b26804fd8062
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column showInChart = if(daily_df[dateId] > year(TODAY()) * 10000 + month(TODAY()) * 100 + day(TODAY()), 1, 0)
+		formatString: 0
+		lineageTag: 81a28fcf-bd4e-404d-a8d1-7fcdb909384e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column weather_code
+		dataType: int64
+		formatString: 0
+		lineageTag: 9a407ddf-57f8-4a1d-bb84-18c6f60fd77c
+		summarizeBy: sum
+		sourceColumn: weather_code
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column precipitation_probability
+		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 89e5e94d-d240-48c9-8881-8a0176413808
+		summarizeBy: none
+		sourceColumn: precipitation_probability
+
+		annotation SummarizationSetBy = User
+
+	column sunrise
+		dataType: string
+		lineageTag: bce9b492-bd8d-4d4f-be4f-bc5fb5e8d483
+		summarizeBy: none
+		sourceColumn: sunrise
+
+		annotation SummarizationSetBy = Automatic
+
+	column sunset
+		dataType: string
+		lineageTag: dc54906d-dfdf-48a0-a2ed-64bdd50e8a42
+		summarizeBy: none
+		sourceColumn: sunset
+
+		annotation SummarizationSetBy = Automatic
+
+	partition daily_df = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = Table.Combine({mdeo_daily_df, pdg_daily_df, pdc_daily_df}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"date", type datetime}, {"uv_index_max", type number}, {"temperature_2m_max", type number}, {"temperature_2m_min", type number}, {"precipitation_sum", type number}, {"precipitation_hours", type number}, {"precipitation_probability_max", type number}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "precipitation_probability", each [precipitation_probability_max] / 100, type number)
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

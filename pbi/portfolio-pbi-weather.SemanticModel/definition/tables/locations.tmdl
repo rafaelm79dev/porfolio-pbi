@@ -1,0 +1,32 @@
+table locations
+	lineageTag: cdaf6756-dd73-4740-a2e2-740a9daa38b1
+
+	column city
+		dataType: string
+		lineageTag: ddfa2394-8463-4844-9c37-4af08849e1dd
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 150d7d92-336d-4aeb-b367-ff6fbee45155
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition locations = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8s3PK0kty0xJzVfSUQotKk0vTaxUitWJVgrILyrJV0hJVXBPzMnMy0gsBso7FSUWZ+ZApHMSKxOB0jkKzolFual5QFnfwysrMpPzlWJjAQ==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [city = _t, country = _t])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

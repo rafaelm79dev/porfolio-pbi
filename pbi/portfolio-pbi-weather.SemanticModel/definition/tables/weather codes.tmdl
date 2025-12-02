@@ -1,0 +1,74 @@
+table 'weather codes'
+	lineageTag: 5a2495c0-6f0c-45e5-b241-9fed895f626a
+
+	column code
+		dataType: int64
+		formatString: 0
+		lineageTag: e14a8281-b7d3-4c9d-8efd-46d25856b3f8
+		summarizeBy: none
+		sourceColumn: code
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
+
+	column 'condition.code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 19da2534-2eb7-4f99-ab08-c7fedeb554ed
+		summarizeBy: none
+		sourceColumn: condition.code
+
+		annotation SummarizationSetBy = User
+
+	column 'conditions.icon'
+		dataType: string
+		lineageTag: f9fcd003-6579-4e3b-b7ae-75d40863b837
+		summarizeBy: none
+		sourceColumn: conditions.icon
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'condition.nigth.url'
+		dataType: string
+		lineageTag: 20888e03-214b-4054-a33d-77a2bef91eb9
+		summarizeBy: none
+		sourceColumn: condition.nigth.url
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'condition.day.url'
+		dataType: string
+		lineageTag: 4a32a673-26f1-489c-9c94-f9e34680b6e5
+		summarizeBy: none
+		sourceColumn: condition.day.url
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 55a12655-eb0a-4a23-aa60-2d1abc6309f1
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'weather codes' = m
+		mode: import
+		queryGroup: Datasets
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("pZQ7b8IwFIX/ylVmDwnBebC26tQupRtisIhJLIyNbAMKv75+BKqAqFpnSpzc7+Se41yvVkmaoOSFU6JA73p7n6VpmqzRKsns4oMwwXvYuPcIDkQZv5LHpkdARAPyRNWGaBPA3IOzWDCPBefYrt5k6wsaepCaGSZaUGxPYStbX5sHW7j6R63L4FWxy4XTBbyztjMI9rKhihiKBgWhKTBh7JUZH+BsPtD5JBpPogvnUlF6cd7GMs/YDIc0cRnPFi6xT7uHC1jycc8e7Sg59XdojQOax6M4Hh0FFTR+nP4GlpFg6SJaCnmGLeH8sWP0RCDA+RQYT4HLK9wqa1Zfn1fpkD3oTp6p0s90T0xyKvzcZlX4S6tsAjubwN6CGFjQfLx1N3fFXytrp/nVHYX9tjZS7a/9gFS3jvyIlmFU6uIOgDMz3YM+dIRxfyhVZeDqCG79DQ==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [code = _t, description = _t, condition.code = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"condition.code", Int64.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"condition.code"}, conditions, {"code"}, "conditions", JoinKind.LeftOuter),
+				    #"Expanded conditions" = Table.ExpandTableColumn(#"Merged Queries", "conditions", {"icon"}, {"conditions.icon"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded conditions",{{"conditions.icon", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type1", "condition.nigth.url", each "https://cdn.weatherapi.com/weather/64x64/night/" & [conditions.icon] & ".png", type text),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "condition.day.url", each "https://cdn.weatherapi.com/weather/64x64/day/" & [conditions.icon] & ".png", type text)
+				in
+				    #"Added Custom1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
