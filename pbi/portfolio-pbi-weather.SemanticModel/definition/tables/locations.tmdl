@@ -1,8 +1,10 @@
+/// list of locations
 table locations
 	lineageTag: cdaf6756-dd73-4740-a2e2-740a9daa38b1
 
 	column city
 		dataType: string
+		isKey
 		lineageTag: ddfa2394-8463-4844-9c37-4af08849e1dd
 		summarizeBy: none
 		sourceColumn: city

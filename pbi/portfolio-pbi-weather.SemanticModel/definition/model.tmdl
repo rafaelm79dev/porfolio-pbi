@@ -50,6 +50,7 @@ ref table daily_df
 ref table pdg_apiURL
 ref table mdeo_apiURL
 ref table pdc_apiURL
+ref table 'DOC MODEL'
 
 ref cultureInfo en-US
 ref cultureInfo es-ES

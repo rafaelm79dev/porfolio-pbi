@@ -1,0 +1,95 @@
+table 'DOC MODEL'
+	lineageTag: 552a88d8-012e-41f0-a04c-6c7dc58e5c40
+
+	column Type
+		lineageTag: 13b06178-246f-4446-91a1-396b25cabecf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		lineageTag: f61326c9-955c-47bf-9b65-73df394cbcc0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		lineageTag: 7ea60682-e00e-4e44-8b47-f21be77797c1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Description]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		lineageTag: b5543a9b-e99b-4689-b6e9-fdb03efe3816
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Location]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Expression
+		lineageTag: 300826e5-be7b-4ba2-9f69-db148946a80a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Expression]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'DOC MODEL' = calculated
+		mode: import
+		source = ```
+				
+				VAR _Columnas = SELECTCOLUMNS(
+				    FILTER(
+				        INFO.VIEW.COLUMNS(),
+				        NOT ([IsHidden])
+				    ),
+				    "Type", "Column",
+				    "Name", [Name],
+				    "Description", [Description],
+				    "Location", [Table],
+				    "Expression", [Expression]
+				)
+				VAR _Medidas = SELECTCOLUMNS(
+				    FILTER(
+				        INFO.VIEW.MEASURES(),
+				        NOT ([IsHidden])
+				    ),
+				    "Type", "Measure",
+				    "Name", [Name],
+				    "Description", [Description],
+				    "Location", [Table],
+				    "Expression", [Expression]
+				)
+				VAR _Tablas = SELECTCOLUMNS(
+				    FILTER(
+				        INFO.VIEW.TABLES(),
+				        NOT ([IsHidden])
+				    ),
+				    "Type", "Table",
+				    "Name", [Name],
+				    "Description", [Description],
+				    "Location", BLANK(),
+				    "Expression", [Expression]
+				)
+				VAR _Relaciones = SELECTCOLUMNS(
+				    INFO.VIEW.RELATIONSHIPS(),
+				    "Type", "Relationship",
+				    "Name", [Name],
+				    "Description", BLANK(),
+				    "Location", [FromTable] & " → " & [ToTable],
+				    "Expression", [FromColumn] & " = " & [ToColumn]
+				)
+				RETURN
+				UNION(_Columnas, _Medidas, _Tablas, _Relaciones)
+				
+				```
+
+	annotation PBI_Id = f7425cd9e6254352a4f2e42da445bd1e
+

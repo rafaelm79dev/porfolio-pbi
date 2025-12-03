@@ -111,16 +111,6 @@
         },
         {
           "location": {},
-          "nodeIndex": "mdeo_weather",
-          "nodeLineageTag": "9a250202-e303-4c8b-b20e-0f1ff4ccd0b6",
-          "size": {
-            "height": 104,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
           "nodeIndex": "mdeo_current_df",
           "nodeLineageTag": "79f83a3b-766d-4da0-b94a-d020313bc205",
           "size": {
@@ -181,15 +171,6 @@
         },
         {
           "location": {},
-          "nodeIndex": "pdg_weather",
-          "size": {
-            "height": 104,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
           "nodeIndex": "pdg_current_df",
           "size": {
             "height": 300,
@@ -217,15 +198,6 @@
         },
         {
           "location": {},
-          "nodeIndex": "pdc_weather",
-          "size": {
-            "height": 104,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
           "nodeIndex": "pdc_current_df",
           "size": {
             "height": 300,
@@ -247,6 +219,45 @@
           "nodeIndex": "pdc_hourly_df",
           "size": {
             "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "mdeo_apiURL",
+          "nodeLineageTag": "1dad5a16-40c9-4d68-96e2-742532836774",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdc_apiURL",
+          "nodeLineageTag": "d5d9b90c-f24c-4d9f-869b-71f53adb585c",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "pdg_apiURL",
+          "nodeLineageTag": "9693e814-5ede-4d76-9a32-5ec358977f2d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "DOC MODEL",
+          "size": {
+            "height": 200,
             "width": 234
           },
           "zIndex": 0
