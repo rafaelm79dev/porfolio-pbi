@@ -68,7 +68,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'''dates''[dayNameES]'"
+                                "Value": "'''dates''[dayNameEN]'"
                               }
                             }
                           ]
@@ -96,7 +96,7 @@
                                 "0": [
                                   {
                                     "Literal": {
-                                      "Value": "'''dates''[dayNameES]'"
+                                      "Value": "'''dates''[dayNameEN]'"
                                     }
                                   }
                                 ]
@@ -120,7 +120,7 @@
                         },
                         "valueMap": [
                           {
-                            "0": "Español"
+                            "0": "English"
                           }
                         ]
                       }

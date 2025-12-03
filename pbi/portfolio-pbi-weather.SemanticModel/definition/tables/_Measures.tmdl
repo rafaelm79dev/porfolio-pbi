@@ -697,6 +697,24 @@ table _Measures
 		displayFolder: Labels
 		lineageTag: 458157b5-b4bf-4151-aec0-f67da8d8cbc2
 
+	measure Title_CreatedDate = ```
+			
+			VAR selectedLang = SELECTCOLUMNS (
+			        SUMMARIZE (
+			            languageParam,
+			            languageParam[language],
+			            languageParam[Parameter Fields]
+			        ),
+			        languageParam[language]
+			    )
+			    
+			 return SWITCH(TRUE(), 
+			 selectedLang = "English", "Created date:",
+			 selectedLang = "Español", "Creado:")
+			```
+		displayFolder: Labels
+		lineageTag: c3a9fd36-0bf2-4b31-9a6f-aa2b9aa4d322
+
 	column Column
 		isHidden
 		formatString: 0

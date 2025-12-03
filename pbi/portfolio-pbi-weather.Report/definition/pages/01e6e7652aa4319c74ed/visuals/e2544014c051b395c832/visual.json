@@ -23,13 +23,13 @@
                       "Entity": "dates"
                     }
                   },
-                  "Property": "dayNameES"
+                  "Property": "dayNameEN"
                 }
               },
-              "queryRef": "dates.dayNameES",
-              "nativeQueryRef": "Español",
+              "queryRef": "dates.dayNameEN",
+              "nativeQueryRef": "English",
               "active": true,
-              "displayName": "Español"
+              "displayName": "English"
             }
           ],
           "fieldParameters": [
